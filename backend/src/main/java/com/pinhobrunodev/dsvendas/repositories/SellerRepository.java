@@ -8,4 +8,6 @@ import com.pinhobrunodev.dsvendas.entities.Seller;
 @Repository
 public interface SellerRepository  extends JpaRepository<Seller, Long>{
 
+	
+	
 }
