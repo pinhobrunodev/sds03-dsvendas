@@ -1,48 +1,48 @@
-package com.pinhobrunodev.dsvendas.entities;
+package com.pinhobrunodev.dsvendas.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.pinhobrunodev.dsvendas.entities.Sale;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-
-@Entity
-@Table(name = "tb_sales")
-public class Sale implements Serializable {
+public class SaleDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Integer visited;
 	private Integer deals;
-	private Double amount;
-	@ManyToOne
-	@JoinColumn(name = "seller_id")
-	private Seller seller;
-
-	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate date;
+	private Double amount;
+	private SellerDTO seller;
 
-	public Sale() {
+	public SaleDTO() {
 
 	}
 
-	public Sale(Long id, Integer visited, Integer deals, Double amount, LocalDate date) {
-		super();
+	public SaleDTO(Long id, Integer visited, Integer deals, Double amount, LocalDate date) {
+
 		this.id = id;
 		this.visited = visited;
 		this.deals = deals;
+		this.date = date;
 		this.amount = amount;
+	}
+
+	public SaleDTO(Sale entity) {
+		id = entity.getId();
+		visited = entity.getVisited();
+		deals = entity.getDeals();
+		amount = entity.getAmount();
+		date = entity.getDate();
+		seller = new SellerDTO(entity.getSeller());
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -78,21 +78,11 @@ public class Sale implements Serializable {
 		this.amount = amount;
 	}
 
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	
-	
-	public Seller getSeller() {
+	public SellerDTO getSeller() {
 		return seller;
 	}
 
-	public void setSeller(Seller seller) {
+	public void setSeller(SellerDTO seller) {
 		this.seller = seller;
 	}
 
@@ -112,7 +102,7 @@ public class Sale implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Sale other = (Sale) obj;
+		SaleDTO other = (SaleDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
